@@ -39,13 +39,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Grabit',
       theme: ThemeData(primarySwatch: Colors.green),
       home: const HomePage(),
     );
   }
 }
-  
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -174,11 +174,11 @@ class _HomePageState extends State<HomePage> {
                       width: double.infinity,
                       height: 300,
                       child: Image.asset(
-                      'assets/images/fashion1.jpg',
-                      height: 400,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
+                        'assets/images/fashion1.jpg',
+                        height: 400,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                     Positioned(
                       top: 100,
