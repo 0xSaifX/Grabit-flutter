@@ -161,8 +161,11 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
+        child: Center(
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 1200),
+            child: Column(
+              children: [
             // Hero Section
             Stack(
               children: [
@@ -262,7 +265,7 @@ class _HomePageState extends State<HomePage> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
+                crossAxisCount: 2,
                 childAspectRatio: 0.7,
               ),
               itemCount: 8,
@@ -446,7 +449,7 @@ class _HomePageState extends State<HomePage> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
+                crossAxisCount: 2,
                 childAspectRatio: 0.7,
               ),
               itemCount: 4,
@@ -474,7 +477,7 @@ class _HomePageState extends State<HomePage> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
+                crossAxisCount: 2,
                 childAspectRatio: 0.7,
               ),
               itemCount: 4,
@@ -502,7 +505,7 @@ class _HomePageState extends State<HomePage> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
+                crossAxisCount: 2,
                 childAspectRatio: 0.7,
               ),
               itemCount: 4,
@@ -585,6 +588,9 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
+      ),
+    ),
+  ),
       ),
     );
   }
