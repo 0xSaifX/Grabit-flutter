@@ -169,12 +169,9 @@ class _HomePageState extends State<HomePage> {
                 // Hero Section
                 Stack(
                   children: [
-                    Image.asset(
-                      'asset/images/fashion1.jpg',
-                      height: 400,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
+                    SizedBox(
+                      
+                    )
                     Positioned(
                       top: 100,
                       left: 50,
