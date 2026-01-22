@@ -203,7 +203,7 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 // Categories Row
-                Container(
+                SizedBox(
                   height: 100,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
