@@ -170,8 +170,15 @@ class _HomePageState extends State<HomePage> {
                 Stack(
                   children: [
                     SizedBox(
-                      
-                    )
+                      width: double.infinity,
+                      height: 300,
+                      child: Image.asset(
+                      'asset/images/fashion1.jpg',
+                      height: 400,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                    ),
                     Positioned(
                       top: 100,
                       left: 50,
