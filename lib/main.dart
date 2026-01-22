@@ -92,11 +92,11 @@ class CategoryRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         CategoryIcon(icon: Icons.apple, label: 'Fruits', amount: '10'),
-        CategoryIcon(icon: Icons.carrot, label: 'Vegetables', amount: '5'),
+        CategoryIcon(icon: Icons.foggy, label: 'Vegetables', amount: '5'),
         CategoryIcon(icon: Icons.bakery_dining, label: 'Bakery', amount: '8'),
         CategoryIcon(icon: Icons.fastfood, label: 'Snacks', amount: '12'),
         CategoryIcon(icon: Icons.local_drink, label: 'Drinks', amount: '15'),
-        CategoryIcon(icon: Icons.milk, label: 'Milk', amount: '20'),
+        CategoryIcon(icon: Icons.home_work, label: 'Milk', amount: '20'),
       ],
     );
   }
