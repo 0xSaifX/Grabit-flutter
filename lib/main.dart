@@ -169,7 +169,7 @@ class _HomePageState extends State<HomePage> {
                 // Hero Section
                 Stack(
                   children: [
-                    Image.network(
+                    child: Image.asset(
                       'https://via.placeholder.com/800x400?text=Hero+Image',
                       height: 400,
                       width: double.infinity,
