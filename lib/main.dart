@@ -38,9 +38,17 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Grabit'),
-        centerTitle: true,
+        centerTitle: false,
         actions: [
-          IconButton(icon: const Icon(Icons.search), onPressed: () {}),
+          SizedBox(
+            width: 200,
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Search',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ),
           IconButton(icon: const Icon(Icons.account_circle), onPressed: () {}),
           IconButton(icon: const Icon(Icons.favorite), onPressed: () {}),
           IconButton(icon: const Icon(Icons.shopping_cart), onPressed: () {}),
