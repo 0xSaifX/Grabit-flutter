@@ -174,7 +174,7 @@ class _HomePageState extends State<HomePage> {
                       width: double.infinity,
                       height: 300,
                       child: Image.asset(
-                      'asset/images/fashion1.jpg',
+                      'assets/images/fashion1.jpg',
                       height: 400,
                       width: double.infinity,
                       fit: BoxFit.cover,
