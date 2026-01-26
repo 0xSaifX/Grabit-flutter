@@ -293,8 +293,6 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   children: [
                     SizedBox(
-                      width: double.infinity,
-                      height: 200,
                       child: Expanded(
                         child: Image.asset(
                           'assets/images/background2.jpg',
