@@ -466,7 +466,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisCount: 2,
                     childAspectRatio: 0.7,
                   ),
-                  itemCount: 4,
+                  itemCount: 6,
                   itemBuilder: (context, index) {
                     return ProductCard(
                       product: Product(
@@ -494,7 +494,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisCount: 2,
                     childAspectRatio: 0.7,
                   ),
-                  itemCount: 4,
+                  itemCount: 6,
                   itemBuilder: (context, index) {
                     return ProductCard(
                       product: Product(
@@ -522,7 +522,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisCount: 2,
                     childAspectRatio: 0.7,
                   ),
-                  itemCount: 4,
+                  itemCount: 6,
                   itemBuilder: (context, index) {
                     return ProductCard(
                       product: Product(
