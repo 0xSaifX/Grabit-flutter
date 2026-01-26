@@ -474,7 +474,7 @@ class _HomePageState extends State<HomePage> {
                         description: 'Desc',
                         price: 20.0,
                         rating: 5.0,
-                        imageUrl: imagePath[index % imagePath.length],
+                        imageUrl: imagePath[index],
                       ),
                     );
                   },
@@ -501,7 +501,7 @@ class _HomePageState extends State<HomePage> {
                         description: 'Desc',
                         price: 25.0,
                         rating: 4.8,
-                        imageUrl: imagePath2[index % imagePath2.length],
+                        imageUrl: imagePath2[index],
                       ),
                     );
                   },
@@ -528,7 +528,7 @@ class _HomePageState extends State<HomePage> {
                         description: 'Desc',
                         price: 30.0,
                         rating: 4.7,
-                        imageUrl: imagePath3[index % imagePath3.length],
+                        imageUrl: imagePath3[index],
                       ),
                     );
                   },
