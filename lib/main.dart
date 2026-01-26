@@ -629,9 +629,9 @@ final imagePath2 = [
   'assets/images/toprated3.jpg',
 ];
 final imagePath3 = [
-  'assets/images/trend1.jpg',
+  'assets/images/trend1.png',
   'assets/images/trend2.jpg',
-  'assets/images/trend3.jpg',
+  'assets/images/trend3.png',
 ];
 
 class CategoryIcon extends StatelessWidget {
