@@ -175,8 +175,6 @@ class _HomePageState extends State<HomePage> {
                       height: 300,
                       child: Image.asset(
                         'assets/images/fashion1.jpg',
-                        height: 400,
-                        width: double.infinity,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -297,8 +295,6 @@ class _HomePageState extends State<HomePage> {
                       height: 300,
                       child: Image.asset(
                         'assets/images/background2.jpg',
-                        height: 400,
-                        width: double.infinity,
                         fit: BoxFit.cover,
                       ),
                     ),
