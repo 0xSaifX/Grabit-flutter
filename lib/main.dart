@@ -304,7 +304,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Positioned(
                       top: 100,
-                      left: 50,
+                      right: 50,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
