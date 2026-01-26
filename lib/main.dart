@@ -466,7 +466,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisCount: 2,
                     childAspectRatio: 0.7,
                   ),
-                  itemCount: 6,
+                  itemCount: 3,
                   itemBuilder: (context, index) {
                     return ProductCard(
                       product: Product(
@@ -474,8 +474,7 @@ class _HomePageState extends State<HomePage> {
                         description: 'Desc',
                         price: 20.0,
                         rating: 5.0,
-                        imageUrl:
-                            'https://via.placeholder.com/200?text=Top+${index + 1}',
+                        imageUrl: imagePath[index],
                       ),
                     );
                   },
@@ -620,6 +619,12 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+final imagePath = [
+  'assets/images/topsell1.jpg',
+  'assets/images/topsell2.jpg',
+  'assets/images/topsell3.jpg',
+];
 
 class CategoryIcon extends StatelessWidget {
   final Category category;
