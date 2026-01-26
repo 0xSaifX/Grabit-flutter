@@ -474,7 +474,7 @@ class _HomePageState extends State<HomePage> {
                         description: 'Desc',
                         price: 20.0,
                         rating: 5.0,
-                        imageUrl: imagePath[index],
+                        imageUrl: imagePath[index % imagePath.length],
                       ),
                     );
                   },
@@ -493,7 +493,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisCount: 2,
                     childAspectRatio: 0.7,
                   ),
-                  itemCount: 6,
+                  itemCount: 3,
                   itemBuilder: (context, index) {
                     return ProductCard(
                       product: Product(
@@ -501,8 +501,7 @@ class _HomePageState extends State<HomePage> {
                         description: 'Desc',
                         price: 25.0,
                         rating: 4.8,
-                        imageUrl:
-                            'https://via.placeholder.com/200?text=Rated+${index + 1}',
+                        imageUrl: imagePath2[index % imagePath2.length],
                       ),
                     );
                   },
@@ -521,7 +520,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisCount: 2,
                     childAspectRatio: 0.7,
                   ),
-                  itemCount: 6,
+                  itemCount: 3,
                   itemBuilder: (context, index) {
                     return ProductCard(
                       product: Product(
@@ -529,8 +528,7 @@ class _HomePageState extends State<HomePage> {
                         description: 'Desc',
                         price: 30.0,
                         rating: 4.7,
-                        imageUrl:
-                            'https://via.placeholder.com/200?text=Trend+${index + 1}',
+                        imageUrl: imagePath3[index % imagePath3.length],
                       ),
                     );
                   },
@@ -631,7 +629,7 @@ final imagePath2 = [
   'assets/images/toprated3.jpg',
 ];
 final imagePath3 = [
-  'assets/images/trend.jpg',
+  'assets/images/trend1.jpg',
   'assets/images/trend2.jpg',
   'assets/images/trend3.jpg',
 ];
