@@ -292,10 +292,9 @@ class _HomePageState extends State<HomePage> {
                 // Vegetables Image Section
                 Row(
                   children: [
-                    Expanded(
-                      child: Image.network(
-                        'https://via.placeholder.com/400x300?text=Vegetables',
-                        fit: BoxFit.cover,
+                    SizedBox(
+                      child: Expanded(
+                        child: Image.asset('assets/images/', fit: BoxFit.cover),
                       ),
                     ),
                     Expanded(
