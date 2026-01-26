@@ -290,36 +290,41 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
                 // Vegetables Image Section
-                Row(
+                Stack(
                   children: [
                     SizedBox(
-                      child: Expanded(
-                        child: Image.asset(
-                          'assets/images/background2.jpg',
-                          fit: BoxFit.cover,
-                        ),
+                      width: double.infinity,
+                      height: 300,
+                      child: Image.asset(
+                        'assets/images/background2.jpg',
+                        height: 400,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Fresh Vegetables',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
+                    Positioned(
+                      top: 100,
+                      left: 50,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Fresh Vegetables',
+                            style: TextStyle(
+                              fontSize: 24,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
                             ),
-                            const Text('Healthy and organic'),
-                            ElevatedButton(
-                              onPressed: () {},
-                              child: const Text('Explore'),
-                            ),
-                          ],
-                        ),
+                          ),
+                          const Text(
+                            'Healthy and Organic',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {},
+                            child: const Text('Shop Now'),
+                          ),
+                        ],
                       ),
                     ),
                   ],
