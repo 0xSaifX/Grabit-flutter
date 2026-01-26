@@ -18,52 +18,73 @@ class AppDrawer extends StatelessWidget {
           const DrawerHeader(child: Text('Grabit Menu')),
           ListTile(
             title: const Text('Grocery'),
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const GroceryPage()),
-            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const GroceryPage()),
+              );
+            },
           ),
           ListTile(
             title: const Text('Fashion'),
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const FashionPage()),
-            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const FashionPage()),
+              );
+            },
           ),
           ListTile(
             title: const Text('Jewelleries'),
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const JewelleriesPage()),
-            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const JewelleriesPage()),
+              );
+            },
           ),
           ListTile(
             title: const Text('Vegetables'),
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const VegetablesPage()),
-            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const VegetablesPage()),
+              );
+            },
           ),
           ListTile(
             title: const Text('Order'),
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const OrderPage()),
-            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const OrderPage()),
+              );
+            },
           ),
           ListTile(
             title: const Text('Cart'),
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const CartPage()),
-            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const CartPage()),
+              );
+            },
           ),
           ListTile(
             title: const Text('Login'),
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const LoginPage()),
-            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const LoginPage()),
+              );
+            },
           ),
         ],
       ),

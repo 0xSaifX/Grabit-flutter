@@ -300,21 +300,21 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.all(20),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: const [
+                    children: [
                       Column(
-                        children: [
+                        children: const [
                           Icon(Icons.security, size: 50),
                           Text('Guarantee'),
                         ],
                       ),
                       Column(
-                        children: [
+                        children: const [
                           Icon(Icons.payment, size: 50),
                           Text('Secure Payment'),
                         ],
                       ),
                       Column(
-                        children: [
+                        children: const [
                           Icon(Icons.refresh, size: 50),
                           Text('Return Policy'),
                         ],
