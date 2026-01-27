@@ -14,4 +14,11 @@ class AppConstants {
     'assets/images/trend2.jpg',
     'assets/images/trend3.png',
   ];
+  static const List<String> imagePath4 = [
+    'assets/images/latest1.jpg',
+    'assets/images/latest2.jpg',
+    'assets/images/latest3.jpg',
+    'assets/images/latest4.jpg',
+    'assets/images/latest5.jpg',
+  ]
 }
