@@ -67,7 +67,6 @@ class _AppHeaderState extends State<AppHeader> {
               Expanded(
                 child: Container(
                   height: 44,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
                     color: Colors.grey[100],
                     borderRadius: BorderRadius.circular(25),
@@ -75,10 +74,12 @@ class _AppHeaderState extends State<AppHeader> {
                   child: TextField(
                     controller: _searchController,
                     key: const ValueKey('header_search'),
+                    textAlignVertical: TextAlignVertical.center, // Vertically center text
                     decoration: const InputDecoration(
                       hintText: 'Search for groceries...',
-                      icon: Icon(Icons.search_rounded, size: 20, color: Colors.grey),
+                      prefixIcon: Icon(Icons.search_rounded, size: 20, color: Colors.grey),
                       border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(vertical: 10), // Adjust for perfect horizontal/vertical alignment
                       isDense: true,
                     ),
                   ),

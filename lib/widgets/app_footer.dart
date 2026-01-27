@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../pages/grocery_page.dart';
 import '../pages/vegetables_page.dart';
 import '../pages/fashion_page.dart';
@@ -54,9 +55,9 @@ class AppFooter extends StatelessWidget {
               Text('© 2026 Grabit Inc. All rights reserved.', style: TextStyle(color: Colors.grey[600], fontSize: 12)),
               Row(
                 children: [
-                   _SocialIcon(Icons.facebook, label: 'Facebook'),
-                   _SocialIcon(Icons.camera_alt_outlined, label: 'Instagram'),
-                   _SocialIcon(Icons.alternate_email_rounded, label: 'Email'),
+                   _SocialIcon(Icons.facebook, label: 'Facebook', url: 'https://facebook.com/grabit'),
+                   _SocialIcon(Icons.camera_alt_outlined, label: 'Instagram', url: 'https://instagram.com/grabit'),
+                   _SocialIcon(Icons.alternate_email_rounded, label: 'Email', url: 'mailto:support@grabit.com'),
                 ],
               ),
             ],
@@ -138,7 +139,18 @@ class _FooterCol extends StatelessWidget {
 class _SocialIcon extends StatelessWidget {
   final IconData icon;
   final String label;
-  const _SocialIcon(this.icon, {required this.label});
+  final String url;
+  const _SocialIcon(this.icon, {required this.label, required this.url});
+
+  Future<void> _launchUrl() async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication, // Ensures it opens in a new tab/browser
+    )) {
+      throw Exception('Could not launch $url');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,12 +158,7 @@ class _SocialIcon extends StatelessWidget {
       padding: const EdgeInsets.only(left: 8),
       child: IconButton(
         icon: Icon(icon, color: Colors.grey[400], size: 22),
-        onPressed: () {
-          // Placeholder for external navigation or specific path
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Navigating to $label...')),
-          );
-        },
+        onPressed: _launchUrl,
         tooltip: label,
       ),
     );

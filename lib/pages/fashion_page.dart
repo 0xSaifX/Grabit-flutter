@@ -22,7 +22,7 @@ class _FashionPageState extends State<FashionPage> {
     description: 'Designer collection wear',
     price: 49.99 + (i * 15),
     rating: 4.9,
-    imageUrl: AppConstants.imagePath7[i % AppConstants.imagePath7.length],
+    imageUrl: AppConstants.imagePath7[(i + 4) % AppConstants.imagePath7.length],
     isNew: true,
   ));
 

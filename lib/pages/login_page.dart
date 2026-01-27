@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/app_header.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/app_footer.dart';
+import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,12 +14,60 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final ScrollController _scrollController = ScrollController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   bool _isLogin = true;
 
   @override
   void dispose() {
     _scrollController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _nameController.dispose();
     super.dispose();
+  }
+
+  void _handleAuth() {
+    // Basic validation
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please fill in all fields'),
+          backgroundColor: Colors.redAccent,
+        ),
+      );
+      return;
+    }
+
+    if (!_isLogin && _nameController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter your full name'),
+          backgroundColor: Colors.redAccent,
+        ),
+      );
+      return;
+    }
+
+    // Success Simulation
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(_isLogin ? 'Login Successful! Welcome back.' : 'Registration Successful! Welcome to Grabit.'),
+        backgroundColor: Colors.green,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+
+    // Navigate to Home Page after a small delay to show the message
+    Future.delayed(const Duration(seconds: 1), () {
+      if (mounted) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const HomePage()),
+          (route) => false,
+        );
+      }
+    });
   }
 
   @override
@@ -62,12 +111,12 @@ class _LoginPageState extends State<LoginPage> {
                       style: const TextStyle(color: Colors.grey),
                     ),
                     const SizedBox(height: 40),
-                    _buildTextField(Icons.email_outlined, 'Email Address'),
+                    _buildTextField(Icons.email_outlined, 'Email Address', controller: _emailController),
                     const SizedBox(height: 20),
-                    _buildTextField(Icons.lock_outline_rounded, 'Password', isObscure: true),
+                    _buildTextField(Icons.lock_outline_rounded, 'Password', isObscure: true, controller: _passwordController),
                     if (!_isLogin) ...[
                       const SizedBox(height: 20),
-                      _buildTextField(Icons.person_outline_rounded, 'Full Name'),
+                      _buildTextField(Icons.person_outline_rounded, 'Full Name', controller: _nameController),
                     ],
                     const SizedBox(height: 10),
                     if (_isLogin)
@@ -80,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                       width: double.infinity,
                       height: 55,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: _handleAuth,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
@@ -117,8 +166,9 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildTextField(IconData icon, String label, {bool isObscure = false}) {
+  Widget _buildTextField(IconData icon, String label, {bool isObscure = false, TextEditingController? controller}) {
     return TextField(
+      controller: controller,
       obscureText: isObscure,
       decoration: InputDecoration(
         labelText: label,

@@ -17,12 +17,12 @@ class _JewelleriesPageState extends State<JewelleriesPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final ScrollController _scrollController = ScrollController();
 
-  static final List<Product> _jewelryProducts = List.generate(6, (i) => Product(
+  static final List<Product> _jewelryProducts = List.generate(10, (i) => Product(
     name: 'Luxury Piece ${i + 1}',
     description: 'Gold and Diamond finish',
     price: 199.99 * (i + 1),
     rating: 5.0,
-    imageUrl: AppConstants.imagePath7[i % AppConstants.imagePath7.length],
+    imageUrl: AppConstants.imagePath7[(i + 5) % AppConstants.imagePath7.length], // Starts from 6th image (index 5)
     isNew: true,
   ));
 
