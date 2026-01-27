@@ -22,7 +22,7 @@ class _GroceryPageState extends State<GroceryPage> {
     description: 'Fresh and organic bundle',
     price: 5.99 + (i * 2),
     rating: 4.5,
-    imageUrl: AppConstants.imagePath[i % AppConstants.imagePath.length],
+    imageUrl: AppConstants.imagePath4[i % AppConstants.imagePath4.length],
     isNew: i % 4 == 0,
   ));
 

@@ -22,7 +22,7 @@ class _JewelleriesPageState extends State<JewelleriesPage> {
     description: 'Gold and Diamond finish',
     price: 199.99 * (i + 1),
     rating: 5.0,
-    imageUrl: AppConstants.imagePath2[i % AppConstants.imagePath2.length],
+    imageUrl: AppConstants.imagePath7[i % AppConstants.imagePath7.length],
     isNew: true,
   ));
 
