@@ -42,32 +42,56 @@ class _JewelleriesPageState extends State<JewelleriesPage> {
         controller: _scrollController,
         physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         slivers: [
-          // Elegant Banner
+          // Elegant Hero Banner
           SliverToBoxAdapter(
             child: Container(
-              height: 220,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.grey[200]!, Colors.white],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+              height: 350,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/jewellery_hero.png'),
+                  fit: BoxFit.cover,
                 ),
               ),
-              child: const Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.diamond_outlined, color: Colors.amber, size: 50),
-                    SizedBox(height: 12),
-                    Text(
-                      'PRECIOUS GEMS',
-                      style: TextStyle(fontSize: 34, fontWeight: FontWeight.w200, letterSpacing: 8, color: Colors.black87),
-                    ),
-                    Text(
-                      'Shine with elegance and grace',
-                      style: TextStyle(color: Colors.grey, fontSize: 14, letterSpacing: 1),
-                    ),
-                  ],
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: [
+                      Colors.black.withOpacity(0.8),
+                      Colors.black.withOpacity(0.2),
+                    ],
+                  ),
+                ),
+                child: const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.diamond_outlined, color: Colors.amber, size: 60),
+                      SizedBox(height: 16),
+                      Text(
+                        'PRECIOUS GEMS',
+                        style: TextStyle(
+                          fontSize: 42,
+                          fontWeight: FontWeight.w200,
+                          letterSpacing: 12,
+                          color: Colors.white,
+                          fontFamily: 'Serif', // If available, otherwise default
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'EXQUISITE LUXURY AT YOUR FINGERTIPS',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 14,
+                          letterSpacing: 4,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

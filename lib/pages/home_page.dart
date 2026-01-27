@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
   ));
 
   static final List<Product> _newArrivals = List.generate(6, (i) => Product(
-    name: 'New Entry $i',
+    name: 'New Arrivals $i',
     description: 'Freshly stocked today',
     price: 9.99 * (i + 1),
     rating: 4.5,
@@ -162,7 +162,7 @@ class _HomePageState extends State<HomePage> {
               delegate: SliverChildBuilderDelegate(
                 (c, i) => ProductCard(
                   product: Product(
-                    name: 'Top Seller $i',
+                    name: 'Top sell $i',
                     description: 'Highly popular',
                     price: 24.99,
                     rating: 4.9,
@@ -230,7 +230,7 @@ class _HomePageState extends State<HomePage> {
           const SliverToBoxAdapter(child: _SupportSection()),
 
           // 13. Social / Brand Section
-          const SliverToBoxAdapter(child: _BrandTrustSection()),
+          
 
           // 14. Footer
           const SliverToBoxAdapter(child: AppFooter()),
@@ -257,7 +257,7 @@ class _HeroSection extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset('assets/images/fashion1.jpg', fit: BoxFit.cover, errorBuilder: (c,e,s) => Container()),
+          Image.asset('assets/images/fashion2back.jpg', fit: BoxFit.cover, errorBuilder: (c,e,s) => Container()),
           Container(color: Colors.black26),
           Padding(
             padding: const EdgeInsets.all(24.0),
@@ -351,32 +351,32 @@ class _SupportSection extends StatelessWidget {
   }
 }
 
-class _BrandTrustSection extends StatelessWidget {
-  const _BrandTrustSection();
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(32),
-      child: Column(
-        children: [
-          const Text('Top Brands We Work With', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey)),
-          const SizedBox(height: 20),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: List.generate(5, (i) => Container(
-                margin: const EdgeInsets.symmetric(horizontal: 12),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                decoration: BoxDecoration(border: Border.all(color: Colors.grey[200]!), borderRadius: BorderRadius.circular(10)),
-                child: Text('BRAND ${i+1}', style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey)),
-              )),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+// class _BrandTrustSection extends StatelessWidget {
+//   const _BrandTrustSection();
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       padding: const EdgeInsets.all(32),
+//       child: Column(
+//         children: [
+//           const Text('Top Brands We Work With', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey)),
+//           const SizedBox(height: 20),
+//           SingleChildScrollView(
+//             scrollDirection: Axis.horizontal,
+//             child: Row(
+//               children: List.generate(5, (i) => Container(
+//                 margin: const EdgeInsets.symmetric(horizontal: 12),
+//                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+//                 decoration: BoxDecoration(border: Border.all(color: Colors.grey[200]!), borderRadius: BorderRadius.circular(10)),
+//                 child: Text('BRAND ${i+1}', style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey)),
+//               )),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 class _SliverSectionTitle extends StatelessWidget {
   final String title;
