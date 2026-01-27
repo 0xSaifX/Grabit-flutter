@@ -13,74 +13,66 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
+      backgroundColor: Colors.white,
+      surfaceTintColor: Colors.white,
+      child: Column(
         children: [
-          const DrawerHeader(child: Text('Grabit Menu')),
-          ListTile(
-            key: const ValueKey('nav_grocery'),
-            leading: const Icon(Icons.shopping_basket),
-            title: const Text('Grocery'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (_) => const GroceryPage()));
-            },
+          DrawerHeader(
+            decoration: const BoxDecoration(color: Colors.green),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+                    child: const Icon(Icons.shopping_basket_rounded, color: Colors.green, size: 40),
+                  ),
+                  const SizedBox(height: 12),
+                  const Text('Grabit Menu', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: -0.5)),
+                ],
+              ),
+            ),
           ),
-          ListTile(
-            key: const ValueKey('nav_fashion'),
-            leading: const Icon(Icons.checkroom),
-            title: const Text('Fashion'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (_) => const FashionPage()));
-            },
-          ),
-          ListTile(
-            key: const ValueKey('nav_jewel'),
-            leading: const Icon(Icons.watch),
-            title: const Text('Jewelleries'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (_) => const JewelleriesPage()));
-            },
-          ),
-          ListTile(
-            key: const ValueKey('nav_veg'),
-            leading: const Icon(Icons.eco),
-            title: const Text('Vegetables'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (_) => const VegetablesPage()));
-            },
-          ),
-          ListTile(
-            key: const ValueKey('nav_order'),
-            leading: const Icon(Icons.receipt_long),
-            title: const Text('Order'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (_) => const OrderPage()));
-            },
-          ),
-          ListTile(
-            key: const ValueKey('nav_cart'),
-            leading: const Icon(Icons.shopping_cart),
-            title: const Text('Cart'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (_) => const CartPage()));
-            },
-          ),
-          ListTile(
-            key: const ValueKey('nav_login'),
-            leading: const Icon(Icons.login),
-            title: const Text('Login'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (_) => const LoginPage()));
-            },
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                _DrawerItem(icon: Icons.storefront_rounded, label: 'Grocery', page: const GroceryPage()),
+                _DrawerItem(icon: Icons.checkroom_rounded, label: 'Fashion', page: const FashionPage()),
+                _DrawerItem(icon: Icons.watch_outlined, label: 'Jewelleries', page: const JewelleriesPage()),
+                _DrawerItem(icon: Icons.eco_rounded, label: 'Vegetables', page: const VegetablesPage()),
+                const Divider(indent: 20, endIndent: 20),
+                _DrawerItem(icon: Icons.receipt_long_rounded, label: 'My Orders', page: const OrderPage()),
+                _DrawerItem(icon: Icons.shopping_cart_outlined, label: 'Cart', page: const CartPage()),
+                const Divider(indent: 20, endIndent: 20),
+                _DrawerItem(icon: Icons.login_rounded, label: 'Login / Register', page: const LoginPage()),
+              ],
+            ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class _DrawerItem extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final Widget page;
+  const _DrawerItem({required this.icon, required this.label, required this.page});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(icon, color: Colors.green[700]),
+      title: Text(label, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
+      onTap: () {
+        Navigator.pop(context);
+        Navigator.push(context, MaterialPageRoute(builder: (_) => page));
+      },
+      contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
+      visualDensity: VisualDensity.compact,
     );
   }
 }

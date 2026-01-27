@@ -2,127 +2,178 @@ import 'package:flutter/material.dart';
 import '../models/product.dart';
 
 class ProductCard extends StatelessWidget {
-  final Product? product;
-
+  final Product product;
   const ProductCard({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
-    if (product == null) return const SizedBox.shrink();
-
+    // Unique key to help MouseTracker keep track of the element
+    final String uniqueId = 'prod_${product.name}_${product.imageUrl}';
+    
     return Card(
-      key: ValueKey('product_card_${product!.name}_${product!.price}'),
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: () {},
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Stack(
+      key: ValueKey(uniqueId),
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {},
+          borderRadius: BorderRadius.circular(16),
+          // Fix for Web MouseTracker: explicit opaque behavior
+          child: MouseRegion(
+            cursor: SystemMouseCursors.click,
+            opaque: false,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _buildImage(),
-                _buildBadge(),
+                Expanded(
+                  flex: 3,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      _ProductImage(imageUrl: product.imageUrl),
+                      if (product.isNew || product.isSale)
+                        Positioned(
+                          top: 10,
+                          left: 10,
+                          child: _Badge(
+                            label: product.isSale ? 'SALE' : 'NEW',
+                            color: product.isSale ? Colors.red : Colors.green,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _ProductTitle(name: product.name, description: product.description),
+                        _ProductPriceRating(price: product.price, rating: product.rating),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
-            _buildInfo(),
-          ],
+          ),
         ),
       ),
     );
   }
+}
 
-  Widget _buildBadge() {
-    if (product!.isNew) {
-      return _PositionedBadge(label: 'New', color: Colors.green);
-    }
-    if (product!.isSale) {
-      return _PositionedBadge(label: 'Sale', color: Colors.red);
-    }
-    return const SizedBox.shrink();
-  }
+class _ProductImage extends StatelessWidget {
+  final String imageUrl;
+  const _ProductImage({required this.imageUrl});
 
-  Widget _buildInfo() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            product!.name,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            product!.description,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(color: Colors.grey[600], fontSize: 12),
-          ),
-          const SizedBox(height: 4),
-          Row(
-            children: [
-              const Icon(Icons.star, color: Colors.amber, size: 14),
-              const SizedBox(width: 4),
-              Text('${product!.rating}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
-            ],
-          ),
-          const SizedBox(height: 4),
-          Text(
-            '\$${product!.price.toStringAsFixed(2)}',
-            style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold, fontSize: 14),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildImage() {
-    final String url = product?.imageUrl ?? '';
-    
-    return AspectRatio(
-      aspectRatio: 1.5,
-      child: url.isEmpty 
-          ? _buildImagePlaceholder()
-          : (url.startsWith('http')
-              ? Image.network(
-                  url,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => _buildImagePlaceholder(),
-                )
-              : Image.asset(
-                  url,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => _buildImagePlaceholder(),
-                )),
-    );
-  }
-
-  Widget _buildImagePlaceholder() {
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      color: Colors.grey[200],
-      child: const Center(child: Icon(Icons.image_not_supported, color: Colors.grey)),
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+        child: Image.network(
+          imageUrl,
+          fit: BoxFit.cover,
+          loadingBuilder: (context, child, progress) {
+            if (progress == null) return child;
+            return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+          },
+          errorBuilder: (context, error, stackTrace) => Image.asset(
+            imageUrl.startsWith('assets') ? imageUrl : 'assets/images/fashion1.jpg',
+            fit: BoxFit.cover,
+            errorBuilder: (c, e, s) => const Center(child: Icon(Icons.shopping_basket_outlined, size: 40, color: Colors.grey)),
+          ),
+        ),
+      ),
     );
   }
 }
 
-class _PositionedBadge extends StatelessWidget {
-  final String label;
-  final Color color;
-  const _PositionedBadge({required this.label, required this.color});
+class _ProductTitle extends StatelessWidget {
+  final String name;
+  final String description;
+  const _ProductTitle({required this.name, required this.description});
+
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: 8,
-      right: 8,
-      child: Container(
-        decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(4)),
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        child: Text(label, style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          name,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+        ),
+        Text(
+          description,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(color: Colors.grey[600], fontSize: 11),
+        ),
+      ],
+    );
+  }
+}
+
+class _ProductPriceRating extends StatelessWidget {
+  final double price;
+  final double rating;
+  const _ProductPriceRating({required this.price, required this.rating});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          '\$${price.toStringAsFixed(2)}',
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: Colors.green),
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+          decoration: BoxDecoration(
+            color: Colors.amber.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Row(
+            children: [
+              const Icon(Icons.star_rounded, color: Colors.amber, size: 14),
+              const SizedBox(width: 2),
+              Text('$rating', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _Badge extends StatelessWidget {
+  final String label;
+  final Color color;
+  const _Badge({required this.label, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(
+        label,
+        style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 0.5),
       ),
     );
   }

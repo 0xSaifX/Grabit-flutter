@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import '../pages/grocery_page.dart';
+import '../pages/vegetables_page.dart';
+import '../pages/fashion_page.dart';
+import '../pages/login_page.dart';
+import '../pages/cart_page.dart';
+import '../pages/order_page.dart';
 
 class AppFooter extends StatelessWidget {
   const AppFooter({super.key});
@@ -6,72 +12,148 @@ class AppFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      key: const ValueKey('app_footer_container'),
-      color: Colors.black,
-      padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+      color: Colors.grey[900],
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildFooterColumn(
-                'Categories',
-                ['Fruits', 'Vegetables', 'Bakery'],
+              Expanded(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Grabit', style: TextStyle(color: Colors.green, fontSize: 28, fontWeight: FontWeight.w900)),
+                    const SizedBox(height: 16),
+                    Text('Your premium destination for fresh groceries delivered to your doorstep. Quality and speed guaranteed.', style: TextStyle(color: Colors.grey[400], height: 1.5)),
+                  ],
+                ),
               ),
-              _buildFooterColumn(
-                'Company',
-                ['About Us', 'Contact', 'Careers'],
+              const SizedBox(width: 40),
+              _FooterCol(
+                title: 'Shop', 
+                items: const ['Fruits', 'Vegetables', 'Dairy', 'Fashion'],
               ),
-              _buildFooterColumn(
-                'Contact',
-                [
-                  'Email: info@grabit.com',
-                  'Phone: 123-456-7890',
-                  'Address: 123 Main St'
-                ],
+              _FooterCol(
+                title: 'Company', 
+                items: const ['About Us', 'Contact', 'Careers'],
+              ),
+              _FooterCol(
+                title: 'Support', 
+                items: const ['FAQ', 'Returns', 'Security', 'Login'],
               ),
             ],
           ),
-          const SizedBox(height: 30),
-          const Divider(color: Colors.grey),
-          const SizedBox(height: 10),
-          const Text(
-            '© 2026 Grabit App. All rights reserved.',
-            key: ValueKey('footer_copyright'),
-            style: TextStyle(color: Colors.grey, fontSize: 12),
+          const SizedBox(height: 60),
+          const Divider(color: Colors.white10),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('© 2026 Grabit Inc. All rights reserved.', style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+              Row(
+                children: [
+                   _SocialIcon(Icons.facebook, label: 'Facebook'),
+                   _SocialIcon(Icons.camera_alt_outlined, label: 'Instagram'),
+                   _SocialIcon(Icons.alternate_email_rounded, label: 'Email'),
+                ],
+              ),
+            ],
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _buildFooterColumn(String title, List<String> items) {
-    return Column(
-      key: ValueKey('footer_col_$title'),
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
-        ),
-        const SizedBox(height: 10),
-        ...items.map((item) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              child: InkWell(
-                key: ValueKey('footer_item_${title}_$item'),
-                onTap: () {},
-                child: Text(
-                  item,
-                  style: const TextStyle(color: Colors.white70, fontSize: 14),
+class _FooterCol extends StatelessWidget {
+  final String title;
+  final List<String> items;
+  const _FooterCol({required this.title, required this.items});
+
+  void _navigate(BuildContext context, String item) {
+    Widget? page;
+    switch (item) {
+      case 'Fruits':
+      case 'Dairy':
+        page = const GroceryPage();
+        break;
+      case 'Vegetables':
+        page = const VegetablesPage();
+        break;
+      case 'Fashion':
+        page = const FashionPage();
+        break;
+      case 'Login':
+        page = const LoginPage();
+        break;
+      case 'Returns':
+      case 'Security':
+      case 'FAQ':
+      case 'About Us':
+      case 'Contact':
+      case 'Careers':
+        // These can go to a generic "Information" page but for now let's just use Grocery as placeholder
+        // or a simple Scaffold with text
+        page = Scaffold(
+          appBar: AppBar(title: Text(item)),
+          body: Center(child: Text('This is the $item page')),
+        );
+        break;
+    }
+
+    if (page != null) {
+      Navigator.push(context, MaterialPageRoute(builder: (_) => page!));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+          const SizedBox(height: 16),
+          ...items.map((item) => Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: InkWell(
+              onTap: () => _navigate(context, item),
+              child: Text(
+                item, 
+                style: TextStyle(
+                  color: Colors.grey[500], 
+                  fontSize: 14,
                 ),
               ),
-            )),
-      ],
+            ),
+          )),
+        ],
+      ),
+    );
+  }
+}
+
+class _SocialIcon extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  const _SocialIcon(this.icon, {required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8),
+      child: IconButton(
+        icon: Icon(icon, color: Colors.grey[400], size: 22),
+        onPressed: () {
+          // Placeholder for external navigation or specific path
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Navigating to $label...')),
+          );
+        },
+        tooltip: label,
+      ),
     );
   }
 }

@@ -17,67 +17,53 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  late ScrollController _mainScrollController;
-  late ScrollController _categoryScrollController;
-  late ScrollController _arrivalScrollController;
+  late ScrollController _scrollController;
+  late ScrollController _catController;
+  late ScrollController _arrivalController;
 
   @override
   void initState() {
     super.initState();
-    _mainScrollController = ScrollController();
-    _categoryScrollController = ScrollController();
-    _arrivalScrollController = ScrollController();
+    _scrollController = ScrollController();
+    _catController = ScrollController();
+    _arrivalController = ScrollController();
   }
 
   @override
   void dispose() {
-    _mainScrollController.dispose();
-    _categoryScrollController.dispose();
-    _arrivalScrollController.dispose();
+    _scrollController.dispose();
+    _catController.dispose();
+    _arrivalController.dispose();
     super.dispose();
   }
 
-  static final List<Product> _featuredProducts = List.generate(8, (index) => Product(
-    name: 'Product ${index + 1}',
-    description: 'Description ${index + 1}',
-    price: 10.0 + index,
-    rating: 4.5,
-    imageUrl: 'https://via.placeholder.com/200?text=Product+${index + 1}',
-    isNew: index % 2 == 0,
-    isSale: index % 3 == 0,
-  ));
+  // --- Static Data Definitions to Prevent Rebuild Churn ---
+  static final List<Category> _categories = [
+    Category(name: 'Fruits', remaining: 45, imageUrl: AppConstants.imagePath5[0], icon: Icons.apple_rounded),
+    Category(name: 'Vege', remaining: 23, imageUrl: AppConstants.imagePath5[1], icon: Icons.grass_rounded),
+    Category(name: 'Dairy', remaining: 12, imageUrl: AppConstants.imagePath5[2], icon: Icons.coffee_rounded),
+    Category(name: 'Bakery', remaining: 8, imageUrl: AppConstants.imagePath5[3], icon: Icons.bakery_dining_rounded),
+    Category(name: 'Drinks', remaining: 60, imageUrl: AppConstants.imagePath5[4], icon: Icons.local_drink_rounded),
+    Category(name: 'Meat', remaining: 5, imageUrl: AppConstants.imagePath5[5], icon: Icons.kebab_dining_rounded),
+  ];
 
-  static final List<Product> _newArrivals = List.generate(10, (index) => Product(
-    name: 'New Product ${index + 1}',
-    description: 'New Description ${index + 1}',
-    price: 15.0 + index,
-    rating: 4.0,
-    imageUrl: 'https://via.placeholder.com/150?text=New+${index + 1}',
-    isNew: true,
-  ));
-
-  static final List<Product> _topSelling = List.generate(3, (index) => Product(
-    name: 'Top Selling ${index + 1}',
-    description: 'Fresh quality product',
-    price: 20.0,
-    rating: 5.0,
-    imageUrl: AppConstants.imagePath[index % AppConstants.imagePath.length],
-  ));
-
-  static final List<Product> _topRated = List.generate(3, (index) => Product(
-    name: 'Top Rated ${index + 1}',
-    description: 'Highly recommended',
-    price: 25.0,
+  static final List<Product> _featuredProducts = List.generate(8, (i) => Product(
+    name: 'Featured Item ${i + 1}',
+    description: 'Premium quality grocery',
+    price: 12.99 + i,
     rating: 4.8,
-    imageUrl: AppConstants.imagePath2[index % AppConstants.imagePath2.length],
+    imageUrl: AppConstants.imagePath4[i % AppConstants.imagePath4.length],
+    isNew: i < 2,
+    isSale: i > 5,
   ));
 
-  static final List<Product> _trending = List.generate(3, (index) => Product(
-    name: 'Trending ${index + 1}',
-    description: 'Popular this week',
-    price: 30.0,
-    rating: 4.7,
-    imageUrl: AppConstants.imagePath3[index % AppConstants.imagePath3.length],
+  static final List<Product> _newArrivals = List.generate(6, (i) => Product(
+    name: 'New Entry $i',
+    description: 'Freshly stocked today',
+    price: 9.99 * (i + 1),
+    rating: 4.5,
+    imageUrl: AppConstants.imagePath4[i % AppConstants.imagePath4.length],
+    isNew: true,
   ));
 
   @override
@@ -86,263 +72,351 @@ class _HomePageState extends State<HomePage> {
       key: _scaffoldKey,
       appBar: AppHeader(scaffoldKey: _scaffoldKey),
       drawer: const AppDrawer(),
-      body: Center(
-        child: Container(
-          constraints: const BoxConstraints(maxWidth: 1200),
-          child: CustomScrollView(
-            controller: _mainScrollController,
-            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-            slivers: [
-              // 1. Hero
-              SliverToBoxAdapter(child: _buildHeroSection()),
-              
-              // 2. Categories
-              SliverToBoxAdapter(child: _buildCategoriesRow()),
-              
-              // 3. Featured Products Title
-              const SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text('Featured Products', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+      body: CustomScrollView(
+        controller: _scrollController,
+        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+        slivers: [
+          // 1. Hero Promo Section
+          const SliverToBoxAdapter(child: _HeroSection()),
+
+          // 2. Categories Row
+          SliverToBoxAdapter(
+            child: RepaintBoundary(
+              child: Container(
+                height: 140,
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                child: ListView.builder(
+                  controller: _catController,
+                  scrollDirection: Axis.horizontal,
+                  physics: const ClampingScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  itemCount: _categories.length,
+                  itemBuilder: (context, index) => CategoryIcon(category: _categories[index]),
                 ),
               ),
-              
-              // 4. Featured Products Grid (SliverGrid)
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                sliver: SliverGrid(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.75,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                  ),
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) => ProductCard(key: ValueKey('featured_$index'), product: _featuredProducts[index]),
-                    childCount: _featuredProducts.length,
-                  ),
-                ),
-              ),
-              
-              // 5. Veg Banner
-              SliverToBoxAdapter(child: _buildVegetablesBanner()),
-              
-              // 6. New Arrivals
-              SliverToBoxAdapter(child: _buildNewArrivalsSection()),
-              
-              // 7. Promo Items
-              SliverToBoxAdapter(child: _buildPromoSection()),
-              
-              // 8. Support Section
-              SliverToBoxAdapter(child: _buildCustomerSupportSection()),
-              
-              // 9. Extra Lists (Top Selling, etc)
-              _buildSliverGridSection('Top Selling', _topSelling, 'topsell'),
-              _buildSliverGridSection('Top Rated', _topRated, 'toprated'),
-              _buildSliverGridSection('Trending', _trending, 'trending'),
-              
-              // 10. Footer
-              const SliverToBoxAdapter(child: AppFooter()),
-            ],
+            ),
           ),
-        ),
+
+          // 3. Featured Products Header
+          const _SliverSectionTitle(title: 'Featured Products'),
+
+          // 4. Featured Products Grid (High Efficiency)
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            sliver: SliverGrid(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.72,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+              ),
+              delegate: SliverChildBuilderDelegate(
+                (c, i) => ProductCard(product: _featuredProducts[i]),
+                childCount: _featuredProducts.length,
+              ),
+            ),
+          ),
+
+          // 5. Promotional Images Banner
+          const SliverToBoxAdapter(child: _VegBanner()),
+
+          // 6. New Arrivals Header
+          const _SliverSectionTitle(title: 'New Arrivals'),
+
+          // 7. New Arrivals Horizontal List
+          SliverToBoxAdapter(
+            child: RepaintBoundary(
+              child: Container(
+                height: 260,
+                margin: const EdgeInsets.only(bottom: 32),
+                child: ListView.builder(
+                  controller: _arrivalController,
+                  scrollDirection: Axis.horizontal,
+                  physics: const ClampingScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  itemCount: _newArrivals.length,
+                  itemBuilder: (c, i) => Container(
+                    width: 170,
+                    margin: const EdgeInsets.only(right: 16),
+                    child: ProductCard(product: _newArrivals[i]),
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          // 8. Two Images Promo Section
+          const SliverToBoxAdapter(child: _PromoCardsRow()),
+
+          // 9. Top Selling Header
+          const _SliverSectionTitle(title: 'Top Selling'),
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            sliver: SliverGrid(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 0.7,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+              ),
+              delegate: SliverChildBuilderDelegate(
+                (c, i) => ProductCard(
+                  product: Product(
+                    name: 'Top Seller $i',
+                    description: 'Highly popular',
+                    price: 24.99,
+                    rating: 4.9,
+                    imageUrl: AppConstants.imagePath[i % AppConstants.imagePath.length],
+                  ),
+                ),
+                childCount: 3,
+              ),
+            ),
+          ),
+
+          // 10. Top Rated Header
+          const _SliverSectionTitle(title: 'Top Rated'),
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            sliver: SliverGrid(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 0.7,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+              ),
+              delegate: SliverChildBuilderDelegate(
+                (c, i) => ProductCard(
+                  product: Product(
+                    name: 'Top Rated $i',
+                    description: 'Five star quality',
+                    price: 29.99,
+                    rating: 5.0,
+                    imageUrl: AppConstants.imagePath2[i % AppConstants.imagePath2.length],
+                  ),
+                ),
+                childCount: 3,
+              ),
+            ),
+          ),
+
+          // 11. Trending Header
+          const _SliverSectionTitle(title: 'Trending'),
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            sliver: SliverGrid(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 0.7,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+              ),
+              delegate: SliverChildBuilderDelegate(
+                (c, i) => ProductCard(
+                  product: Product(
+                    name: 'Trending $i',
+                    description: 'Fashionable choice',
+                    price: 34.99,
+                    rating: 4.7,
+                    imageUrl: AppConstants.imagePath3[i % AppConstants.imagePath3.length],
+                  ),
+                ),
+                childCount: 3,
+              ),
+            ),
+          ),
+
+          // 12. Customer Support Info
+          const SliverToBoxAdapter(child: _SupportSection()),
+
+          // 13. Social / Brand Section
+          const SliverToBoxAdapter(child: _BrandTrustSection()),
+
+          // 14. Footer
+          const SliverToBoxAdapter(child: AppFooter()),
+        ],
       ),
     );
   }
+}
 
-  Widget _buildHeroSection() {
-    return AspectRatio(
-      aspectRatio: 16 / 6,
+// --- Component Private Widgets to Maximize 'const' Usage ---
+
+class _HeroSection extends StatelessWidget {
+  const _HeroSection();
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(16),
+      height: 200,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        gradient: const LinearGradient(colors: [Colors.green, Colors.teal]),
+      ),
+      clipBehavior: Clip.antiAlias,
       child: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            'assets/images/fashion1.jpg',
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) => Container(color: Colors.grey[200]),
-          ),
-          Container(color: Colors.black.withOpacity(0.2)),
-          Positioned(
-            left: 50,
-            top: 0,
-            bottom: 0,
-            child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text('Fresh Groceries', style: TextStyle(fontSize: 42, color: Colors.white, fontWeight: FontWeight.bold)),
-                  const Text('Delivered to your door', style: TextStyle(fontSize: 20, color: Colors.white)),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    key: const ValueKey('hero_shop_btn'),
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.green, padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20)),
-                    child: const Text('Shop Now', style: TextStyle(color: Colors.white)),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCategoriesRow() {
-    return Container(
-      height: 140,
-      margin: const EdgeInsets.symmetric(vertical: 20),
-      child: ListView(
-        controller: _categoryScrollController,
-        scrollDirection: Axis.horizontal,
-        physics: const ClampingScrollPhysics(),
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        children: [
-          CategoryIcon(key: const ValueKey('cat_fruits'), category: Category(name: 'Fruits', remaining: 50, icon: Icons.apple)),
-          CategoryIcon(key: const ValueKey('cat_veg'), category: Category(name: 'Vegetables', remaining: 30, icon: Icons.grass)),
-          CategoryIcon(key: const ValueKey('cat_bakery'), category: Category(name: 'Bakery', remaining: 20, icon: Icons.cake)),
-          CategoryIcon(key: const ValueKey('cat_snacks'), category: Category(name: 'Snacks', remaining: 40, icon: Icons.fastfood)),
-          CategoryIcon(key: const ValueKey('cat_drinks'), category: Category(name: 'Drinks', remaining: 60, icon: Icons.local_drink)),
-          CategoryIcon(key: const ValueKey('cat_milk'), category: Category(name: 'Milk', remaining: 25, icon: Icons.local_cafe)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildVegetablesBanner() {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 40),
-      child: AspectRatio(
-        aspectRatio: 16 / 4,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Image.asset(
-              'assets/images/background2.jpg',
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) => Container(color: Colors.grey[200]),
-            ),
-            Positioned(
-              right: 80,
-              top: 0,
-              bottom: 0,
-              child: Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text('Fresh Vegetables', style: TextStyle(fontSize: 32, color: Colors.white, fontWeight: FontWeight.bold)),
-                    const Text('Healthy and Organic', style: TextStyle(fontSize: 18, color: Colors.white)),
-                    const SizedBox(height: 10),
-                    ElevatedButton(key: const ValueKey('veg_btn'), onPressed: () {}, child: const Text('Order Now')),
-                  ],
+          Image.asset('assets/images/fashion1.jpg', fit: BoxFit.cover, errorBuilder: (c,e,s) => Container()),
+          Container(color: Colors.black26),
+          Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('FREE DELIVERY', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
+                const Text('Fresh Grocery\nAt Your Doorstep', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 32, height: 1.1)),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: Colors.green),
+                  child: const Text('SHOP NOW'),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
+}
 
-  Widget _buildNewArrivalsSection() {
-    return Column(
-      children: [
-        const Text('New Arrivals', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 20),
-        SizedBox(
-          height: 250,
-          child: ListView.builder(
-            controller: _arrivalScrollController,
-            scrollDirection: Axis.horizontal,
-            physics: const ClampingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            itemCount: _newArrivals.length,
-            itemBuilder: (context, index) => ProductCard(key: ValueKey('arr_$index'), product: _newArrivals[index]),
+class _VegBanner extends StatelessWidget {
+  const _VegBanner();
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+      height: 160,
+      decoration: BoxDecoration(
+        color: Colors.teal[50],
+        borderRadius: BorderRadius.circular(20),
+        image: const DecorationImage(image: AssetImage('assets/images/background2.jpg'), fit: BoxFit.cover),
+      ),
+      child: Stack(
+        children: [
+          Positioned(
+            right: 20,
+            top: 30,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                const Text('Organic 100%', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                const Text('Fresh Vegetables', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900)),
+                ElevatedButton(onPressed: () {}, child: const Text('Order Now')),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
+}
 
-  Widget _buildPromoSection() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 8),
+class _PromoCardsRow extends StatelessWidget {
+  const _PromoCardsRow();
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.all(16.0),
       child: Row(
         children: [
-          Expanded(child: _buildPromoItem('Fashion Sale', '50% OFF', 'promo1')),
-          Expanded(child: _buildPromoItem('Tech Deals', 'Free Shipping', 'promo2')),
+          Expanded(child: _PromoCard(title: 'Fast Food', sub: '20% OFF', color: Color(0xFFFFB300))),
+          SizedBox(width: 16),
+          Expanded(child: _PromoCard(title: 'Bakery', sub: 'Buy 1 Get 1', color: Color(0xFFFF7043))),
         ],
       ),
     );
   }
+}
 
-  Widget _buildPromoItem(String title, String sub, String key) {
-    return AspectRatio(
-      aspectRatio: 1.2,
-      child: Container(
-        margin: const EdgeInsets.all(8),
-        decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(12)),
-        clipBehavior: Clip.antiAlias,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Image.network('https://via.placeholder.com/400x300?text=$title', fit: BoxFit.cover, errorBuilder: (c,e,s) => const Icon(Icons.image)),
-            Container(color: Colors.black26),
-            Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(title, style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
-                  Text(sub, style: const TextStyle(color: Colors.white70)),
-                  const SizedBox(height: 10),
-                  ElevatedButton(key: ValueKey(key), onPressed: () {}, child: const Text('View')),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCustomerSupportSection() {
+class _SupportSection extends StatelessWidget {
+  const _SupportSection();
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 60),
-      color: Colors.grey[50],
+      margin: const EdgeInsets.symmetric(vertical: 40),
+      padding: const EdgeInsets.symmetric(vertical: 40),
+      color: Colors.white,
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _SupportItem(icon: Icons.security, title: 'Guarantee'),
-          _SupportItem(icon: Icons.payment, title: 'Secure Payment'),
-          _SupportItem(icon: Icons.refresh, title: 'Return Policy'),
+          _SupportItem(icon: Icons.local_shipping_outlined, title: 'Free Delivery'),
+          _SupportItem(icon: Icons.replay_circle_filled_rounded, title: 'Easy Returns'),
+          _SupportItem(icon: Icons.shield_moon_outlined, title: 'Secure Pay'),
         ],
       ),
     );
   }
+}
 
-  Widget _buildSliverGridSection(String title, List<Product> products, String keyPrefix) {
-    return MultiSliver(
-      children: [
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(title, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-          ),
-        ),
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          sliver: SliverGrid(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, childAspectRatio: 0.7, crossAxisSpacing: 12, mainAxisSpacing: 12),
-            delegate: SliverChildBuilderDelegate(
-              (c, i) => ProductCard(key: ValueKey('${keyPrefix}_$i'), product: products[i]),
-              childCount: products.length,
+class _BrandTrustSection extends StatelessWidget {
+  const _BrandTrustSection();
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(32),
+      child: Column(
+        children: [
+          const Text('Top Brands We Work With', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey)),
+          const SizedBox(height: 20),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: List.generate(5, (i) => Container(
+                margin: const EdgeInsets.symmetric(horizontal: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                decoration: BoxDecoration(border: Border.all(color: Colors.grey[200]!), borderRadius: BorderRadius.circular(10)),
+                child: Text('BRAND ${i+1}', style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey)),
+              )),
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SliverSectionTitle extends StatelessWidget {
+  final String title;
+  const _SliverSectionTitle({required this.title});
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(title, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: Colors.black87)),
+            TextButton(onPressed: () {}, child: const Text('See All')),
+          ],
         ),
-        const SliverToBoxAdapter(child: SizedBox(height: 30)),
-      ],
+      ),
+    );
+  }
+}
+
+class _PromoCard extends StatelessWidget {
+  final String title;
+  final String sub;
+  final Color color;
+  const _PromoCard({required this.title, required this.sub, required this.color});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 120,
+      decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(20)),
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(sub, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+          Text(title, style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900)),
+        ],
+      ),
     );
   }
 }
@@ -355,17 +429,10 @@ class _SupportItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Icon(icon, size: 40, color: Colors.green),
-        const SizedBox(height: 10),
-        Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        Icon(icon, color: Colors.green, size: 32),
+        const SizedBox(height: 8),
+        Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
       ],
     );
   }
-}
-
-class MultiSliver extends StatelessWidget {
-  final List<Widget> children;
-  const MultiSliver({super.key, required this.children});
-  @override
-  Widget build(BuildContext context) => SliverList(delegate: SliverChildListDelegate(children));
 }
