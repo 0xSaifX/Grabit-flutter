@@ -17,14 +17,18 @@ class _VegetablesPageState extends State<VegetablesPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final ScrollController _scrollController = ScrollController();
 
-  static final List<Product> _vegProducts = List.generate(8, (i) => Product(
-    name: 'Fresh Veggie Bundle ${i + 1}',
-    description: '100% Organic & Pesticide Free',
-    price: 3.50 + i,
-    rating: 4.7,
-    imageUrl: AppConstants.imagePath5[i % AppConstants.imagePath5.length],
-    isSale: i % 2 == 0,
-  ));
+  static final List<Product> _vegProducts = List.generate(4, (i) {
+    // Starting from index 6 of imagePath5 to use the "remaining" images
+    final int imageIndex = (6 + i) % AppConstants.imagePath5.length;
+    return Product(
+      name: 'Fresh Veggie Bundle ${i + 1}',
+      description: '100% Organic & Pesticide Free',
+      price: 3.50 + i,
+      rating: 4.7,
+      imageUrl: AppConstants.imagePath5[imageIndex],
+      isSale: i % 2 == 0,
+    );
+  });
 
   @override
   void dispose() {
