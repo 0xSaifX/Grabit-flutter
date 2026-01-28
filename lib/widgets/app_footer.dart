@@ -49,16 +49,19 @@ class AppFooter extends StatelessWidget {
                 _FooterCol(
                   title: 'Shop',
                   items: const ['Fruits', 'Vegetables', 'Dairy', 'Fashion'],
+                  expanded: false,
                 ),
                 const SizedBox(height: 24),
                 _FooterCol(
                   title: 'Company',
                   items: const ['About Us', 'Contact', 'Careers'],
+                  expanded: false,
                 ),
                 const SizedBox(height: 24),
                 _FooterCol(
                   title: 'Support',
                   items: const ['FAQ', 'Returns', 'Security', 'Login'],
+                  expanded: false,
                 ),
               ],
             )
@@ -174,7 +177,12 @@ class AppFooter extends StatelessWidget {
 class _FooterCol extends StatelessWidget {
   final String title;
   final List<String> items;
-  const _FooterCol({required this.title, required this.items});
+  final bool expanded;
+  const _FooterCol({
+    required this.title,
+    required this.items,
+    this.expanded = true,
+  });
 
   void _navigate(BuildContext context, String item) {
     Widget? page;
@@ -214,34 +222,34 @@ class _FooterCol extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
+    final child = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
           ),
-          const SizedBox(height: 16),
-          ...items.map(
-            (item) => Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: InkWell(
-                onTap: () => _navigate(context, item),
-                child: Text(
-                  item,
-                  style: TextStyle(color: Colors.grey[500], fontSize: 14),
-                ),
+        ),
+        const SizedBox(height: 16),
+        ...items.map(
+          (item) => Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: InkWell(
+              onTap: () => _navigate(context, item),
+              child: Text(
+                item,
+                style: TextStyle(color: Colors.grey[500], fontSize: 14),
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
+
+    return expanded ? Expanded(child: child) : child;
   }
 }
 
