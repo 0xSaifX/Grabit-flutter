@@ -10,17 +10,20 @@ class AppFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = MediaQuery.of(context).size.width < 768;
     return Container(
       color: Colors.grey[900],
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 16 : 24,
+        vertical: isMobile ? 40 : 60,
+      ),
       child: Column(
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                flex: 2,
-                child: Column(
+          if (isMobile)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
@@ -34,57 +37,134 @@ class AppFooter extends StatelessWidget {
                     const SizedBox(height: 16),
                     Text(
                       'Your premium destination for fresh groceries delivered to your doorstep. Quality and speed guaranteed.',
-                      style: TextStyle(color: Colors.grey[400], height: 1.5),
+                      style: TextStyle(
+                        color: Colors.grey[400],
+                        height: 1.5,
+                        fontSize: 13,
+                      ),
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(width: 40),
-              _FooterCol(
-                title: 'Shop',
-                items: const ['Fruits', 'Vegetables', 'Dairy', 'Fashion'],
-              ),
-              _FooterCol(
-                title: 'Company',
-                items: const ['About Us', 'Contact', 'Careers'],
-              ),
-              _FooterCol(
-                title: 'Support',
-                items: const ['FAQ', 'Returns', 'Security', 'Login'],
-              ),
-            ],
-          ),
-          const SizedBox(height: 60),
+                const SizedBox(height: 40),
+                _FooterCol(
+                  title: 'Shop',
+                  items: const ['Fruits', 'Vegetables', 'Dairy', 'Fashion'],
+                ),
+                const SizedBox(height: 24),
+                _FooterCol(
+                  title: 'Company',
+                  items: const ['About Us', 'Contact', 'Careers'],
+                ),
+                const SizedBox(height: 24),
+                _FooterCol(
+                  title: 'Support',
+                  items: const ['FAQ', 'Returns', 'Security', 'Login'],
+                ),
+              ],
+            )
+          else
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Grabit',
+                        style: TextStyle(
+                          color: Colors.green,
+                          fontSize: 28,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Your premium destination for fresh groceries delivered to your doorstep. Quality and speed guaranteed.',
+                        style: TextStyle(color: Colors.grey[400], height: 1.5),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 40),
+                _FooterCol(
+                  title: 'Shop',
+                  items: const ['Fruits', 'Vegetables', 'Dairy', 'Fashion'],
+                ),
+                _FooterCol(
+                  title: 'Company',
+                  items: const ['About Us', 'Contact', 'Careers'],
+                ),
+                _FooterCol(
+                  title: 'Support',
+                  items: const ['FAQ', 'Returns', 'Security', 'Login'],
+                ),
+              ],
+            ),
+          const SizedBox(height: 40),
           const Divider(color: Colors.white10),
           const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '© 2026 Grabit Inc. All rights reserved.',
-                style: TextStyle(color: Colors.grey[600], fontSize: 12),
-              ),
-              Row(
-                children: [
-                  _SocialIcon(
-                    Icons.facebook,
-                    label: 'Facebook',
-                    url: 'https://facebook.com/grabit',
-                  ),
-                  _SocialIcon(
-                    Icons.camera_alt_outlined,
-                    label: 'Instagram',
-                    url: 'https://instagram.com/grabit',
-                  ),
-                  _SocialIcon(
-                    Icons.alternate_email_rounded,
-                    label: 'Email',
-                    url: 'mailto:support@grabit.com',
-                  ),
-                ],
-              ),
-            ],
-          ),
+          if (isMobile)
+            Column(
+              children: [
+                Text(
+                  '© 2026 Grabit Inc. All rights reserved.',
+                  style: TextStyle(color: Colors.grey[600], fontSize: 11),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _SocialIcon(
+                      Icons.facebook,
+                      label: 'Facebook',
+                      url: 'https://facebook.com/grabit',
+                    ),
+                    _SocialIcon(
+                      Icons.camera_alt_outlined,
+                      label: 'Instagram',
+                      url: 'https://instagram.com/grabit',
+                    ),
+                    _SocialIcon(
+                      Icons.alternate_email_rounded,
+                      label: 'Email',
+                      url: 'mailto:support@grabit.com',
+                    ),
+                  ],
+                ),
+              ],
+            )
+          else
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '© 2026 Grabit Inc. All rights reserved.',
+                  style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                ),
+                Row(
+                  children: [
+                    _SocialIcon(
+                      Icons.facebook,
+                      label: 'Facebook',
+                      url: 'https://facebook.com/grabit',
+                    ),
+                    _SocialIcon(
+                      Icons.camera_alt_outlined,
+                      label: 'Instagram',
+                      url: 'https://instagram.com/grabit',
+                    ),
+                    _SocialIcon(
+                      Icons.alternate_email_rounded,
+                      label: 'Email',
+                      url: 'mailto:support@grabit.com',
+                    ),
+                  ],
+                ),
+              ],
+            ),
         ],
       ),
     );
@@ -185,11 +265,13 @@ class _SocialIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 4),
       child: IconButton(
         icon: Icon(icon, color: Colors.grey[400], size: 22),
         onPressed: _launchUrl,
         tooltip: label,
+        padding: const EdgeInsets.all(8),
+        constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
       ),
     );
   }
