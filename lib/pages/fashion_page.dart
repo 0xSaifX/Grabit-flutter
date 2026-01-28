@@ -17,14 +17,18 @@ class _FashionPageState extends State<FashionPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final ScrollController _scrollController = ScrollController();
 
-  static final List<Product> _fashionProducts = List.generate(10, (i) => Product(
-    name: 'Fashion Trend ${i + 1}',
-    description: 'Designer collection wear',
-    price: 49.99 + (i * 15),
-    rating: 4.9,
-    imageUrl: AppConstants.imagePath7[(i + 4) % AppConstants.imagePath7.length],
-    isNew: true,
-  ));
+  static final List<Product> _fashionProducts = List.generate(
+    10,
+    (i) => Product(
+      name: 'Fashion Trend ${i + 1}',
+      description: 'Designer collection wear',
+      price: 49.99 + (i * 15),
+      rating: 4.9,
+      imageUrl:
+          AppConstants.imagePath7[(i + 4) % AppConstants.imagePath7.length],
+      isNew: true,
+    ),
+  );
 
   @override
   void dispose() {
@@ -40,7 +44,9 @@ class _FashionPageState extends State<FashionPage> {
       drawer: const AppDrawer(),
       body: CustomScrollView(
         controller: _scrollController,
-        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         slivers: [
           // Banner
           SliverToBoxAdapter(
@@ -68,7 +74,12 @@ class _FashionPageState extends State<FashionPage> {
                     children: [
                       Text(
                         'FASHION HUB',
-                        style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold, letterSpacing: -2),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: -2,
+                        ),
                       ),
                       Text(
                         'Discover the latest trends in luxury wear',
@@ -80,14 +91,14 @@ class _FashionPageState extends State<FashionPage> {
               ),
             ),
           ),
-          
+
           const SliverPadding(
             padding: EdgeInsets.all(24.0),
             sliver: SliverToBoxAdapter(
               child: Row(
                 children: [
                   Icon(Icons.auto_awesome, color: Colors.amber, size: 28),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
                   Text(
                     'Exclusive Collection',
                     style: TextStyle(fontSize: 26, fontWeight: FontWeight.w900),
