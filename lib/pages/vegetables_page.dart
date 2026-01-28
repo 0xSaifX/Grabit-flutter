@@ -19,7 +19,7 @@ class _VegetablesPageState extends State<VegetablesPage> {
 
   static final List<Product> _vegProducts = List.generate(4, (i) {
     // Starting from index 6 of imagePath5 to use the "remaining" images
-    final int imageIndex = (4 + i) % AppConstants.imagePath5.length;
+    final int imageIndex = (8 + i) % AppConstants.imagePath5.length;
     return Product(
       name: 'Fresh Veggie Bundle ${i + 1}',
       description: '100% Organic & Pesticide Free',
@@ -44,7 +44,9 @@ class _VegetablesPageState extends State<VegetablesPage> {
       drawer: const AppDrawer(),
       body: CustomScrollView(
         controller: _scrollController,
-        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+        physics: const BouncingScrollPhysics(
+          parent: AlwaysScrollableScrollPhysics(),
+        ),
         slivers: [
           // Banner with a fresh image-based look
           SliverToBoxAdapter(
@@ -55,33 +57,53 @@ class _VegetablesPageState extends State<VegetablesPage> {
                   image: AssetImage('assets/images/latest1.jpg'),
                   fit: BoxFit.cover,
                 ),
-                borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(30),
+                ),
               ),
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.black.withOpacity(0.4),
-                  borderRadius: const BorderRadius.vertical(bottom: Radius.circular(30)),
+                  borderRadius: const BorderRadius.vertical(
+                    bottom: Radius.circular(30),
+                  ),
                 ),
                 child: Stack(
                   children: [
                     Positioned(
                       right: -20,
                       top: -20,
-                      child: Icon(Icons.eco, size: 200, color: Colors.white.withOpacity(0.1)),
+                      child: Icon(
+                        Icons.eco,
+                        size: 200,
+                        color: Colors.white.withOpacity(0.1),
+                      ),
                     ),
                     const Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.grass_rounded, color: Colors.white, size: 40),
+                          Icon(
+                            Icons.grass_rounded,
+                            color: Colors.white,
+                            size: 40,
+                          ),
                           SizedBox(height: 10),
                           Text(
                             'ORGANIC MARKET',
-                            style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold, letterSpacing: 2),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 2,
+                            ),
                           ),
                           Text(
                             'Directly from farmers to you',
-                            style: TextStyle(color: Colors.white70, fontSize: 16),
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 16,
+                            ),
                           ),
                         ],
                       ),
@@ -91,13 +113,17 @@ class _VegetablesPageState extends State<VegetablesPage> {
               ),
             ),
           ),
-          
+
           const SliverPadding(
             padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
             sliver: SliverToBoxAdapter(
               child: Text(
                 'Seasonal Vegetables',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800, color: Colors.green),
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.green,
+                ),
               ),
             ),
           ),

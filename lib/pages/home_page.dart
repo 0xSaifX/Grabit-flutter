@@ -428,33 +428,6 @@ class _SupportSection extends StatelessWidget {
   }
 }
 
-// class _BrandTrustSection extends StatelessWidget {
-//   const _BrandTrustSection();
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: const EdgeInsets.all(32),
-//       child: Column(
-//         children: [
-//           const Text('Top Brands We Work With', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey)),
-//           const SizedBox(height: 20),
-//           SingleChildScrollView(
-//             scrollDirection: Axis.horizontal,
-//             child: Row(
-//               children: List.generate(5, (i) => Container(
-//                 margin: const EdgeInsets.symmetric(horizontal: 12),
-//                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-//                 decoration: BoxDecoration(border: Border.all(color: Colors.grey[200]!), borderRadius: BorderRadius.circular(10)),
-//                 child: Text('BRAND ${i+1}', style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey)),
-//               )),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
 class _SliverSectionTitle extends StatelessWidget {
   final String title;
   const _SliverSectionTitle({required this.title});
